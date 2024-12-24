@@ -1,7 +1,17 @@
-const fsPromises = require("fs/promises");
 const path = require("path");
-const { getLogFiles } = require("./helpers");
+const { initLogSetup, writeLog } = require("./src/fileHelpers");
 
-console.log("dirname", __filename, __dirname);
+// console.log("dirname", __filename, __dirname);
+const basePath = path.join(path.resolve(), "logs");
 
-getLogFiles();
+async function init() {
+  await initLogSetup(basePath);
+  console.log("init");
+  await writeLog("hello world", basePath);
+
+  for (let i = 0; i < 10_00_000; i++) {
+    await writeLog(`hello world ${i}`, basePath);
+  }
+}
+
+init();
